@@ -1,13 +1,8 @@
-const { v4: uuid } = require("uuid");
+const {UserSchema} = require("../schema/schema");
+const {model} = require("mongoose");
 
-class User {
-  constructor(fullname, username, password, photo) {
-    this.id = uuid();
-    this.fullname = fullname;
-    this.username = username;
-    this.password = password;
-    this.photo = photo;
-  }
+const User = model("User", UserSchema);
+
+module.exports = {
+  User
 }
-
-module.exports = User;
