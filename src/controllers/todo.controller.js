@@ -35,10 +35,12 @@ const createTodo = async (req, res) => {
         const { name, description } = req.body;
         const userId = req.user.payload.id;
         await getAuthenticatedUser(userId);
+
         const findTodo = await Todo.findOne({ name, userId });
         if (findTodo) {
             return res.status(409).json({ message: "Todo already exists" });
         }
+
         const newTodo = new Todo({ name, description, userId });
         await newTodo.save();
         res.status(201).json({ message: "Todo created successfully", data: newTodo });
