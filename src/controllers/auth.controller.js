@@ -9,7 +9,11 @@ const loginSchema = Joi.object({
   username: Joi.string().min(5).required(),
   password: Joi.string().min(6).required(),
 });
-
+const registerSchema = Joi.object({
+  fullname: Joi.string().min(3).required(),
+  username: Joi.string().min(5).required(),
+  password: Joi.string().min(6).required(),
+});
 const login = async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -40,7 +44,8 @@ const register = async (req, res) => {
   try {
     const { fullname, username, password } = req.body;
     const { photo } = req.files;
-
+    const { error } = registerSchema.validate({ fullname, username, password });
+    if (error) return res.status(400).json({ message: error.details[0].message });
     const existingUser = await User.findOne({ username });
     if (existingUser) {
       return res.status(403).json({ message: "Username already registered" });
